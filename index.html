@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Rent Growth — Rents vs. Inflation by County</title>
+<meta name="description" content="See how much rents have actually risen in every US county — nominal vs. inflation-adjusted. Median gross rent from Census ACS, adjusted with CPI-U.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <h1>Real Rent Growth</h1>
+        <p class="tagline">"Rents are up 25%" — but how much of that is just inflation? Check the real number for any US county.</p>
+    </div>
+</header>
+
+<div id="hero-stats" class="hero-stats">
+    <div class="hero-card"><div class="big" id="hero-count">—</div><div class="small">counties included</div></div>
+    <div class="hero-card"><div class="big" id="hero-median">—</div><div class="small">median gross rent, 2019–2023 window</div></div>
+    <div class="hero-card"><div class="big" id="hero-real">—</div><div class="small">counties where real rents <b>fell</b> since 2019 (after inflation)</div></div>
+</div>
+
+<nav class="tabs">
+    <button id="tab-search" class="tab active" onclick="setMode('search')">Search a County</button>
+    <button id="tab-rank" class="tab" onclick="setMode('rank')">Rankings</button>
+    <button id="tab-about" class="tab" onclick="setMode('about')">Methodology</button>
+</nav>
+
+<main>
+    <!-- SEARCH -->
+    <section id="mode-search" class="mode active">
+        <input type="text" id="search-input" placeholder="Type a county name… (e.g. Jefferson, Wayne, Travis)" autocomplete="off" oninput="handleSearch()">
+        <div id="search-results"></div>
+        <div id="detail-panel"></div>
+    </section>
+
+    <!-- RANKINGS -->
+    <section id="mode-rank" class="mode">
+        <div class="rank-controls">
+            <label>Window:
+                <select id="rank-window" onchange="renderRankings()">
+                    <option value="19_23">2019 → 2023 (recent)</option>
+                    <option value="14_19">2014 → 2019 (pre-pandemic)</option>
+                    <option value="14_23">2014 → 2023 (full period)</option>
+                </select>
+            </label>
+            <label>Sort:
+                <select id="rank-sort" onchange="renderRankings()">
+                    <option value="real">Real growth (after inflation)</option>
+                    <option value="nominal">Nominal growth</option>
+                    <option value="diff">Inflation gap (nominal − real)</option>
+                </select>
+            </label>
+            <label><input type="checkbox" id="rank-min100" onchange="renderRankings()"> Only counties with 2023 median rent ≥ $500</label>
+        </div>
+        <div id="rank-results"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="mode-about" class="mode">
+        <div class="about-box">
+            <h2>What this tool does</h2>
+            <p>When the news says "rents are up 25%," that number is usually <b>nominal</b> — the sticker price. But the dollar itself shrank: over the same period, inflation raised prices across the economy. A county whose rents rose 10% while inflation was 10.5% actually became <i>cheaper</i> in real terms. This tool shows both numbers for every US county.</p>
+
+            <h2>The data</h2>
+            <ul>
+                <li><b>Rents:</b> median gross rent (Census table B25064) from the American Community Survey 5-year estimates, three vintages:
+                    <ul>
+                        <li>2014 5-year (2010–2014) — pre-pre-pandemic baseline</li>
+                        <li>2019 5-year (2015–2019) — pre-pandemic baseline</li>
+                        <li>2023 5-year (2019–2023) — the current window</li>
+                    </ul>
+                </li>
+                <li><b>Inflation:</b> Consumer Price Index for All Urban Consumers (CPI-U), from the BLS via FRED. Annual averages are taken at each window's midpoint (2012, 2017, 2021) and the growth factor is applied multiplicatively — the same method EQR's institutional pipeline uses.</li>
+            </ul>
+
+            <h2>How to read the numbers</h2>
+            <p><b>Nominal growth</b> = the sticker change in median gross rent between two ACS windows.
+            <b>Real growth</b> = nominal growth divided by the CPI factor for the same period, minus one.
+            If real growth is negative, rents rose slower than inflation — renters' purchasing power in that county improved relative to prices elsewhere.</p>
+            <p>Example: Jefferson County, Alabama. Median gross rent went $811 (2010–2014) → $900 (2015–2019) → $1,132 (2019–2023). Over the recent window that's +25.8% nominal, but inflation was +10.6% — the real increase is <b>+13.8%</b>.</p>
+
+            <h2>Caveats</h2>
+            <ul>
+                <li>These are <b>medians of different renter populations</b>, not a repeat-rent index tracking the same units. Growth is the ratio of vintage medians; actual renters' experience varies with unit turnover and quality mix.</li>
+                <li>ACS 5-year estimates carry margins of error, not shown here.</li>
+                <li>Counties with no cash-rent households or suppressed values are omitted from the affected window.</li>
+                <li>Median gross rent includes utilities paid by the renter. CPI-U is national, not county-level; local inflation differs.</li>
+            </ul>
+
+            <h2>Sources</h2>
+            <ul>
+                <li>US Census Bureau, American Community Survey 5-Year Estimates, table B25064 (2014, 2019, 2023 vintages) — <a href="https://www.census.gov/programs-surveys/acs" target="_blank" rel="noopener">census.gov/acs</a></li>
+                <li>BLS Consumer Price Index (CPI-U, series CPIAUCSL) — <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank" rel="noopener">fred.stlouisfed.org</a></li>
+            </ul>
+            <p class="footer-note">Built from public data. Estimates are informative, not legal or financial advice. Found an error? <a href="https://github.com/GreatTombProductions/real-rent-growth/issues" target="_blank" rel="noopener">Open an issue</a>.</p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Data: US Census ACS 5-year B25064 · Inflation: BLS CPI-U via FRED · <a href="https://github.com/GreatTombProductions/real-rent-growth" target="_blank" rel="noopener">Source &amp; build pipeline</a></p>
+</footer>
+
+<script src="app.js"></script>
+<br><span style="font-size:0.85em">&#8226;</span> <a href="https://github.com/GreatTombProductions/quest-board/issues/new?title=real-rent-growth%3A%20%5Bbrief%20description%5D&labels=feedback%2Creal-rent-growth" target="_blank" rel="noopener" style="color:var(--text2)">Found an issue or have feedback?</a>
+</body>
+</html>

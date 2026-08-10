@@ -1,0 +1,154 @@
+/* Real Rent Growth — dark, quiet, data-first */
+:root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --accent: #58a6ff;
+    --up: #3fb950;
+    --down: #f85149;
+    --warn: #d29922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header { border-bottom: 1px solid var(--border); padding: 28px 20px 20px; text-align: center; }
+.header-inner { max-width: 860px; margin: 0 auto; }
+header h1 { font-size: 1.9em; letter-spacing: 0.3px; }
+.tagline { color: var(--text2); margin-top: 6px; font-size: 0.95em; }
+
+.hero-stats {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    padding: 18px 20px; max-width: 860px; margin: 0 auto;
+}
+.hero-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 18px; min-width: 200px; text-align: center;
+}
+.hero-card .big { font-size: 1.5em; font-weight: 700; color: var(--accent); }
+.hero-card .small { color: var(--text2); font-size: 0.8em; margin-top: 4px; }
+
+.tabs { display: flex; justify-content: center; gap: 8px; padding: 16px 20px 4px; }
+.tab {
+    background: var(--surface); color: var(--text2); border: 1px solid var(--border);
+    padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 0.9em;
+}
+.tab:hover { color: var(--text); }
+.tab.active { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+
+main { max-width: 860px; margin: 0 auto; padding: 16px 20px 60px; }
+.mode { display: none; }
+.mode.active { display: block; }
+
+#search-input {
+    width: 100%; padding: 12px 14px; font-size: 1.05em;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+}
+#search-input:focus { outline: none; border-color: var(--accent); }
+
+.result-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 14px; margin-top: 8px; cursor: pointer;
+}
+.result-item:hover { border-color: var(--accent); }
+.result-item .name { font-weight: 600; }
+.result-item .location { color: var(--text2); font-size: 0.82em; }
+.change-badge {
+    font-weight: 700; font-size: 0.85em; padding: 3px 10px; border-radius: 20px;
+    background: var(--surface2); color: var(--text2); white-space: nowrap; margin-left: 10px;
+}
+.change-up { color: var(--up); }
+.change-down { color: var(--down); }
+.change-flat { color: var(--text2); }
+
+.loading, .no-results { color: var(--text2); text-align: center; padding: 30px 0; }
+
+/* --- Detail --- */
+#detail-panel { margin-top: 16px; }
+#detail-panel.active { display: block; }
+.back {
+    background: none; border: none; color: var(--accent); cursor: pointer;
+    font-size: 0.85em; padding: 0 0 10px;
+}
+.detail-title { font-size: 1.5em; font-weight: 700; }
+.subtitle { color: var(--text2); font-size: 0.85em; margin-bottom: 14px; }
+
+.money-line {
+    background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 14px 16px; margin: 14px 0; font-size: 1.02em;
+}
+.money-line b { color: var(--accent); }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px; text-align: center;
+}
+.stat-card .big { font-size: 1.35em; font-weight: 700; }
+.stat-card .small { color: var(--text2); font-size: 0.78em; margin-top: 4px; }
+
+.section { margin-top: 22px; }
+.section h3 { font-size: 1em; margin-bottom: 10px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+
+.window-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 10px;
+}
+.window-card h4 { font-size: 0.95em; margin-bottom: 8px; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+.bar-label { width: 100px; color: var(--text2); font-size: 0.78em; text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 14px; position: relative; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; min-width: 2px; }
+.bar-fill.pos { background: var(--up); }
+.bar-fill.neg { background: var(--down); }
+.bar-fill.neu { background: var(--warn); }
+.bar-value { width: 74px; font-size: 0.85em; font-weight: 600; flex-shrink: 0; text-align: right; }
+.bar-value.pos { color: var(--up); }
+.bar-value.neg { color: var(--down); }
+.bar-value.neu { color: var(--warn); }
+.window-note { color: var(--text2); font-size: 0.78em; margin-top: 6px; }
+
+.rent-table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+.rent-table th, .rent-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+.rent-table th { color: var(--text2); font-weight: 600; font-size: 0.82em; }
+.rent-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.note-box {
+    background: var(--surface); border: 1px solid var(--warn); border-radius: 8px;
+    padding: 12px 14px; margin: 12px 0; font-size: 0.85em; color: var(--text2);
+}
+
+/* --- Rankings --- */
+.rank-controls { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; color: var(--text2); font-size: 0.9em; }
+.rank-controls select, .rank-controls input {
+    background: var(--surface); color: var(--text); border: 1px solid var(--border);
+    padding: 5px 8px; border-radius: 6px; margin-left: 4px;
+}
+.rank-table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+.rank-table th, .rank-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+.rank-table th { color: var(--text2); font-weight: 600; font-size: 0.8em; }
+.rank-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.rank-table tr { cursor: pointer; }
+.rank-table tr:hover { background: var(--surface); }
+
+/* --- About --- */
+.about-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; }
+.about-box h2 { font-size: 1.1em; margin: 18px 0 8px; }
+.about-box h2:first-child { margin-top: 0; }
+.about-box p, .about-box li { color: var(--text2); font-size: 0.92em; }
+.about-box ul { padding-left: 20px; margin: 8px 0; }
+.about-box li { margin: 4px 0; }
+.footer-note { margin-top: 16px; font-size: 0.85em; }
+
+footer { border-top: 1px solid var(--border); padding: 18px 20px; text-align: center; color: var(--text2); font-size: 0.8em; }

@@ -1,0 +1,39 @@
+{
+ "name": "Real Rent Growth",
+ "generated": "2026-08-10",
+ "records": 3216,
+ "sources": {
+  "2014": "ACS 5-Year 2010-2014, table B25064 (median gross rent), Census Summary File Seq105",
+  "2019": "ACS 5-Year 2015-2019, table B25064, Census Summary File Seq114",
+  "2023": "ACS 5-Year 2019-2023, table B25064, Census Table-Based Summary File",
+  "cpi": "BLS CPI-U (CPIAUCSL) via FRED, annual averages at window midpoints"
+ },
+ "windows": {
+  "14_19": {
+   "label": "2014 \u2192 2019 (5 yr)",
+   "cpi_change_pct": 6.77
+  },
+  "19_23": {
+   "label": "2019 \u2192 2023 (4 yr)",
+   "cpi_change_pct": 10.55
+  },
+  "14_23": {
+   "label": "2014 \u2192 2023 (9 yr)",
+   "cpi_change_pct": 18.03
+  }
+ },
+ "cpi": {
+  "cpi_2012": 229.586,
+  "cpi_2017": 245.121,
+  "cpi_2021": 270.973,
+  "factor_14_19": 1.0677,
+  "factor_19_23": 1.1055,
+  "factor_14_23": 1.1803
+ },
+ "missing": {
+  "2014": 13,
+  "2019": 17,
+  "2023": 21
+ },
+ "note": "Median gross rent is an ACS 5-year estimate for the whole window; growth is the ratio of vintage medians (different renter populations), not a repeat-rent index. Counties with no cash-rent households or suppressed values are omitted."
+}
